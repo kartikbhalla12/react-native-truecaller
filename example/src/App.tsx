@@ -8,7 +8,7 @@ import {
 
 export default function App() {
   const { initializeTruecaller, openTruecallerModal, user } = useTruecaller({
-    androidClientId: '2exmuwemj74_oex5vaqsnnfeych3xbw-1gan3x_crp0',
+    androidClientId: 'YOUR_ANDROID_CLIENT_ID',
     androidButtonColor: '#212121',
     androidButtonTextColor: '#FFFFFF',
     androidButtonStyle: TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_STYLES.ROUND,

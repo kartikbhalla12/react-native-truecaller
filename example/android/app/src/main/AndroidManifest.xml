@@ -23,7 +23,7 @@
       </activity>
         <meta-data 
       android:name="com.truecaller.android.sdk.ClientId" 
-      android:value="2exmuwemj74_oex5vaqsnnfeych3xbw-1gan3x_crp0" />
+      android:value="YOUR_ANDROID_CLIENT_ID" />
     </application>
   
 </manifest>
