@@ -12,6 +12,8 @@ npm install @kartikbhalla/react-native-truecaller
 
 ### Android
 
+- Generate client-id using [Truecaller Android Guide](https://docs.truecaller.com/truecaller-sdk/android/oauth-sdk-3.0.0/integration-steps/generating-client-id)
+
 - Add the following <meta-data> tag to your AndroidManifest.xml file:
     ```
     <meta-data 
@@ -21,6 +23,8 @@ npm install @kartikbhalla/react-native-truecaller
     ```
 
 ### iOS
+
+- Generate AppKey using [Truecaller IOS Guide](https://docs.truecaller.com/truecaller-sdk/ios/generating-app-key)
 
 - Add the entry truesdk under LSApplicationQueriesSchemes in into your Info.plist file
     ```
@@ -54,7 +58,7 @@ npm install @kartikbhalla/react-native-truecaller
 
 - Use the truecaller hook
     ```
-    const { initializeTruecaller, openTruecallerModal, user } = useTruecaller({
+    const { initializeTruecaller, openTruecallerModal, user, isTruecallerSupported } = useTruecaller({
         iosAppKey: 'YOUR_IOS_APP_KEY',
         iosAppLink: 'YOUR_IOS_APP_LINK',
         androidButtonColor: '#FF0000',
@@ -71,7 +75,10 @@ npm install @kartikbhalla/react-native-truecaller
     useEffect(() => {
         initializeTruecaller();
     }, []);
-
+    ```
+- You can verify if the truecaller is supported using
+    ```
+    const isSupported = isTruecallerSupported();
     ```
 - Open truecaller modal using
     ```

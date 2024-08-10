@@ -201,7 +201,7 @@ public class TruecallerAndroidModule extends ReactContextBaseJavaModule {
 
 
   @ReactMethod
-  public void isUsable() {
+  public boolean isUsable() {
     return TcSdk.getInstance().isOAuthFlowUsable();
   }
 
