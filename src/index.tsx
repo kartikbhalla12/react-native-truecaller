@@ -8,6 +8,7 @@ import {
 import axios from 'axios';
 
 import {
+  type IAndroidUserResponse,
   type IInitializeTruecaller,
   type IUser,
   type IUseTruecaller,
@@ -19,6 +20,7 @@ import {
   DEFAULT_BUTTON_COLOR,
   DEFAULT_BUTTON_TEXT_COLOR,
   TRUECALLER_IOS_EVENTS,
+  IOSGender,
 } from './constants';
 
 const TruecallerAndroid = NativeModules.TruecallerAndroidModule;
@@ -59,14 +61,13 @@ const openTruecallerModal = () => {
   else if (Platform.OS === 'ios') TruecallerIOS.requestProfile();
 };
 
-//TODO add axios interfaces
-//TODO add events interfaces
+const isTruecallerSupported = () => {
+  if (Platform.OS === 'android') return TruecallerAndroid.isUsable();
+  else if (Platform.OS === 'ios') return TruecallerIOS.isSupported();
+  return false;
+};
 
-enum Gender {
-  null,
-  'male',
-  'female',
-}
+//TODO add events interfaces
 
 export const useTruecaller = ({
   androidClientId,
@@ -113,13 +114,25 @@ export const useTruecaller = ({
             const accessToken = response.data.access_token;
 
             axios
-              .get('https://oauth-account-noneu.truecaller.com/v1/userinfo', {
-                //TODO Constants
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                },
-              })
-              .then((resp) => setUser(resp.data));
+              .get<IAndroidUserResponse>(
+                'https://oauth-account-noneu.truecaller.com/v1/userinfo',
+                {
+                  //TODO Constants
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                  },
+                }
+              )
+              .then((resp) =>
+                setUser({
+                  firstName: resp.data.given_name,
+                  lastName: resp.data.family_name || null,
+                  mobileNumber: resp.data.phone_number,
+                  countryCode: `+${resp.data.phone_number_country_code}`,
+                  gender: resp.data.gender || null,
+                  email: resp.data.email || null,
+                })
+              );
 
             //TODO create fixed user interface.
           })
@@ -145,7 +158,8 @@ export const useTruecaller = ({
           lastName: profile.lastName,
           email: profile.email || null,
           countryCode: profile.countryCode,
-          gender: Gender[profile.gender] || null,
+          gender: IOSGender?.[profile.gender] || null,
+          mobileNumber: profile.phoneNumber,
         })
     );
   }, [iosAppKey, iosAppLink]);
@@ -164,6 +178,7 @@ export const useTruecaller = ({
       }),
     openTruecallerModal,
     user,
+    isTruecallerSupported,
     //TODO error,
     //TODO errorCode,
   };

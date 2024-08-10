@@ -187,7 +187,7 @@ public class TruecallerAndroidModule extends ReactContextBaseJavaModule {
     String stateRequested = stateRequestedBigInt.toString(32);
 
     TcSdk.getInstance().setOAuthState(stateRequested);
-    TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone"});
+    TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone", "email"});
 
     codeVerifier = CodeVerifierUtil.Companion.generateRandomCodeVerifier();
     String codeChallenge = CodeVerifierUtil.Companion.getCodeChallenge(codeVerifier);
@@ -201,8 +201,8 @@ public class TruecallerAndroidModule extends ReactContextBaseJavaModule {
 
 
   @ReactMethod
-  public void isUsable(Callback boolCallBack) {
-    boolCallBack.invoke(TcSdk.getInstance().isOAuthFlowUsable());
+  public void isUsable() {
+    return TcSdk.getInstance().isOAuthFlowUsable();
   }
 
   private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {

@@ -39,10 +39,26 @@ export interface IUseTruecaller extends ITruecallerBase {
   androidClientId?: string;
 }
 
+export type IGender = 'male' | 'female';
+
 export interface IUser {
   firstName: string;
   lastName: string | null;
   email: string | null;
   countryCode: string;
-  gender: string | null;
+  gender: IGender | null;
+  mobileNumber: string;
+}
+
+export interface IAndroidUserResponse {
+  family_name: string | null;
+  given_name: string;
+  phone_number: string;
+  phone_number_country_code: string;
+  gender: IGender | null;
+  email: string | null;
+}
+
+export interface IIOSGender {
+  [a: number]: IGender | null;
 }

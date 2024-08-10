@@ -1,3 +1,5 @@
+import type { IIOSGender } from './interfaces';
+
 export const TRUECALLER_ANDROID_CUSTOMIZATIONS = {
   BUTTON_TEXTS: Object.freeze({
     CONTINUE: 'TRUECALLER_ANDROID_BUTTON_TEXT_CONTINUE',
@@ -74,3 +76,9 @@ export const TRUECALLER_IOS_EVENTS = {
 
 export const DEFAULT_BUTTON_TEXT_COLOR = '#FFFFFF';
 export const DEFAULT_BUTTON_COLOR = '#212121';
+
+export const IOSGender: IIOSGender = {
+  0: null,
+  1: 'male',
+  2: 'female',
+};

@@ -11,6 +11,10 @@ RCT_EXPORT_MODULE();
     return @[@"TruecallerIOSSuccess", @"TruecallerIOSFailure"];
 }
 
+RCT_EXPORT_METHOD(isSupported) {
+  return [[TCTrueSDK sharedManager] isSupported];
+}
+
 RCT_EXPORT_METHOD(initialize:(NSString *)appKey appLink:(NSString *)appLink) {
     if ([[TCTrueSDK sharedManager] isSupported]) {
         [[TCTrueSDK sharedManager] setupWithAppKey:appKey appLink:appLink];
