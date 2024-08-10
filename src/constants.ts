@@ -67,5 +67,10 @@ export const TRUECALLER_ANDROID_EVENTS = {
   TRUECALLER_FAILURE: 'TruecallerAndroidFailure',
 };
 
+export const TRUECALLER_IOS_EVENTS = {
+  TRUECALLER_SUCCESS: 'TruecallerIOSSuccess',
+  TRUECALLER_FAILURE: 'TruecallerIOSFailure',
+};
+
 export const DEFAULT_BUTTON_TEXT_COLOR = '#FFFFFF';
 export const DEFAULT_BUTTON_COLOR = '#212121';

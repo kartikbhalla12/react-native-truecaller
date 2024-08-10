@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { NativeModules, DeviceEventEmitter, Platform } from 'react-native';
+import {
+  NativeModules,
+  DeviceEventEmitter,
+  Platform,
+  NativeEventEmitter,
+} from 'react-native';
 import axios from 'axios';
 
 import { type IInitializeTruecaller, type IUseTruecaller } from './interfaces';
@@ -9,6 +14,7 @@ import {
   TRUECALLER_ANDROID_EVENTS,
   DEFAULT_BUTTON_COLOR,
   DEFAULT_BUTTON_TEXT_COLOR,
+  TRUECALLER_IOS_EVENTS,
 } from './constants';
 
 const TruecallerAndroid = NativeModules.TruecallerAndroidModule;
@@ -46,7 +52,7 @@ const initialize = ({
 
 const openTruecallerModal = () => {
   if (Platform.OS === 'android') TruecallerAndroid.invoke();
-  else TruecallerIOS.requestProfile();
+  else if (Platform.OS === 'ios') TruecallerIOS.requestProfile();
 };
 
 //TODO add axios interfaces
@@ -65,8 +71,14 @@ export const useTruecaller = ({
 }: IUseTruecaller) => {
   const [user, setUser] = useState(null);
 
+  //TODO
+  // const [errorCode, setErrorCode] = useState(null);
+  // const [error, setError] = useState(null);
+
   useEffect(() => {
     if (Platform.OS !== 'android' || !androidClientId) return;
+
+    //TODO Add failure event;
 
     DeviceEventEmitter.addListener(
       TRUECALLER_ANDROID_EVENTS.TRUECALLER_SUCCESS,
@@ -101,10 +113,25 @@ export const useTruecaller = ({
 
             //TODO create fixed user interface.
           })
-          .catch(() => {});
+          .catch(() => {
+            //TODO error handling
+          });
       }
     );
   }, [androidClientId]);
+
+  useEffect(() => {
+    if (Platform.OS !== 'ios' || !iosAppKey || !iosAppLink) return;
+
+    //TODO Add failure event;
+
+    const eventEmitter = new NativeEventEmitter(TruecallerIOS);
+
+    eventEmitter.addListener(
+      TRUECALLER_IOS_EVENTS.TRUECALLER_SUCCESS,
+      (profile) => setUser(profile)
+    );
+  }, [iosAppKey, iosAppLink]);
 
   return {
     initializeTruecaller: () =>
@@ -120,6 +147,8 @@ export const useTruecaller = ({
       }),
     openTruecallerModal,
     user,
+    //TODO error,
+    //TODO errorCode,
   };
 };
 
