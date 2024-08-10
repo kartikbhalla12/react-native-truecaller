@@ -47,7 +47,14 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "truecaller",
+    "truecaller-ios",
+    "truecaller-android",
+    "react-native-truecaller",
+    "react-native-truecaller-sdk",
+    "android-truecaller-sdk",
+    "ios-truecaller-sdk"
   ],
   "repository": {
     "type": "git",
