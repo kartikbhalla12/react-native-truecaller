@@ -7,7 +7,11 @@ import {
 } from 'react-native';
 import axios from 'axios';
 
-import { type IInitializeTruecaller, type IUseTruecaller } from './interfaces';
+import {
+  type IInitializeTruecaller,
+  type IUser,
+  type IUseTruecaller,
+} from './interfaces';
 
 import {
   TRUECALLER_ANDROID_CUSTOMIZATIONS,
@@ -58,6 +62,12 @@ const openTruecallerModal = () => {
 //TODO add axios interfaces
 //TODO add events interfaces
 
+enum Gender {
+  null,
+  'male',
+  'female',
+}
+
 export const useTruecaller = ({
   androidClientId,
   iosAppKey,
@@ -69,7 +79,7 @@ export const useTruecaller = ({
   androidConsentHeading,
   androidFooterButtonText,
 }: IUseTruecaller) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   //TODO
   // const [errorCode, setErrorCode] = useState(null);
@@ -129,7 +139,14 @@ export const useTruecaller = ({
 
     eventEmitter.addListener(
       TRUECALLER_IOS_EVENTS.TRUECALLER_SUCCESS,
-      (profile) => setUser(profile)
+      (profile) =>
+        setUser({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          email: profile.email || null,
+          countryCode: profile.countryCode,
+          gender: Gender[profile.gender] || null,
+        })
     );
   }, [iosAppKey, iosAppLink]);
 

@@ -50,7 +50,6 @@ npm install @kartikbhalla/react-native-truecaller
 - Import the package using
     ```
     import { useTruecaller, TRUECALLER_ANDROID_CUSTOMIZATIONS } from '@kartikbhalla/react-native-truecaller';
-
     ```
 
 - Use the truecaller hook
@@ -88,7 +87,7 @@ npm install @kartikbhalla/react-native-truecaller
 
 Android supports customizations available in [Android Truecaller SDK Customizations](https://docs.truecaller.com/truecaller-sdk/android/oauth-sdk-3.0.0/integration-steps/customisation). To customize these, you can use the following constants available inside TRUECALLER_ANDROID_CUSTOMIZATIONS
 
-## Android Button Texts
+### Android Button Texts
 ```
 TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_TEXTS.CONTINUE
 TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_TEXTS.ACCEPT
@@ -96,13 +95,13 @@ TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_TEXTS.CONFIRM
 TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_TEXTS.PROCEED
 ```
 
-## Android Button Styles
+### Android Button Styles
 ```
 TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_STYLES.ROUND
 TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_STYLES.RECTANGLE
 ```
 
-## Android Footer Button Texts
+### Android Footer Button Texts
 ```
 TRUECALLER_ANDROID_CUSTOMIZATIONS.FOOTER_BUTTON_TEXTS.SKIP
 TRUECALLER_ANDROID_CUSTOMIZATIONS.FOOTER_BUTTON_TEXTS.ANOTHER_MOBILE_NUMBER
@@ -111,7 +110,7 @@ TRUECALLER_ANDROID_CUSTOMIZATIONS.FOOTER_BUTTON_TEXTS.MANUALLY
 TRUECALLER_ANDROID_CUSTOMIZATIONS.FOOTER_BUTTON_TEXTS.LATER
 ```
 
-## Android Consent Heading Texts
+### Android Consent Heading Texts
 ```
 TRUECALLER_ANDROID_CUSTOMIZATIONS.CONSENT_HEADING_TEXTS.LOG_IN_TO
 TRUECALLER_ANDROID_CUSTOMIZATIONS.CONSENT_HEADING_TEXTS.SIGN_UP_WITH

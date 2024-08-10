@@ -22,9 +22,7 @@ export type IConsetHeadingKey =
 export type IConsentHeadingValue =
   (typeof TRUECALLER_ANDROID_CUSTOMIZATIONS.CONSENT_HEADING_TEXTS)[IConsetHeadingKey];
 
-//TODO extract interface
-
-export interface IInitializeTruecaller {
+interface ITruecallerBase {
   iosAppKey?: string;
   iosAppLink?: string;
 
@@ -35,18 +33,16 @@ export interface IInitializeTruecaller {
   androidFooterButtonText?: IFooterButtonTextValue;
   androidConsentHeading?: IConsentHeadingValue;
 }
+export interface IInitializeTruecaller extends ITruecallerBase {}
 
-//TODO extract interface
-
-export interface IUseTruecaller {
+export interface IUseTruecaller extends ITruecallerBase {
   androidClientId?: string;
-  iosAppKey?: string;
-  iosAppLink?: string;
+}
 
-  androidButtonColor?: ColorValue;
-  androidButtonTextColor?: ColorValue;
-  androidButtonStyle?: IButtonStyleValue;
-  androidButtonText?: IButtonTextValue;
-  androidFooterButtonText?: IFooterButtonTextValue;
-  androidConsentHeading?: IConsentHeadingValue;
+export interface IUser {
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  countryCode: string;
+  gender: string | null;
 }
