@@ -139,7 +139,7 @@ export const useTruecaller = ({
 
     DeviceEventEmitter.addListener(
       TRUECALLER_ANDROID_EVENTS.TRUECALLER_FAILURE,
-      ({ error: errorMessageAndroid, errorCode: errorCodeAndroid }) => {
+      ({ errorMessage: errorMessageAndroid, errorCode: errorCodeAndroid }) => {
         setError(errorMessageAndroid);
         setErrorCode(errorCodeAndroid);
       }
