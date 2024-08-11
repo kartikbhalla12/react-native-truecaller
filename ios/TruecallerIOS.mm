@@ -12,7 +12,13 @@ RCT_EXPORT_MODULE();
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isSupported) {
-  return @([[TCTrueSDK sharedManager] isSupported]);
+    @try {
+        return @([[TCTrueSDK sharedManager] isSupported]);
+    }
+    @catch (NSException *exception) {
+        [self sendTruecallerFailureEvent:0 message:exception.reason];
+        return @NO;
+    }
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)appKey appLink:(NSString *)appLink) {
@@ -20,7 +26,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)appKey appLink:(NSString *)appLink) {
         [[TCTrueSDK sharedManager] setupWithAppKey:appKey appLink:appLink];
         [TCTrueSDK sharedManager].delegate = self;
     } else {
-        // TODO Handle the case where TrueSDK is not supported
+        [self sendTruecallerFailureEvent:0 message:@"The Truecaller app is not installed or supported"];
     }
 }
 
@@ -38,7 +44,6 @@ RCT_EXPORT_METHOD(requestProfile) {
 
 
 - (void)didReceiveTrueProfile:(nonnull TCTrueProfile *)profile {
-    
     NSDictionary *profileData = @{
         @"firstName": profile.firstName ?: [NSNull null],
         @"lastName": profile.lastName ?: [NSNull null],
@@ -52,12 +57,13 @@ RCT_EXPORT_METHOD(requestProfile) {
 }
 
 - (void)didFailToReceiveTrueProfileWithError:(nonnull TCError *)error {
-    
-    NSInteger errorCode = [error getErrorCode];
-    
+    [self sendTruecallerFailureEvent:[error getErrorCode] message:error.localizedDescription];
+}
+
+- (void)sendTruecallerFailureEvent:(NSInteger)errorCode message:(NSString *)errorMessage {
     NSDictionary *errorData = @{
-        @"errorCode": (errorCode == 0) ? [NSNull null] : @(errorCode),
-        @"errorMessage": error.localizedDescription ?: [NSNull null],
+        @"errorCode": @(errorCode),
+        @"errorMessage": errorMessage ?: (NSString *)[NSNull null]
     };
     
     [self sendEventWithName:@"TruecallerIOSFailure" body:errorData];

@@ -80,8 +80,8 @@ export const useTruecaller = ({
 }: IUseTruecaller) => {
   const [user, setUser] = useState<IUser | null>(null);
 
-  const [errorCode, setErrorCode] = useState(null);
-  const [error, setError] = useState(null);
+  const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (Platform.OS !== 'android' || !androidClientId) return;
@@ -149,9 +149,15 @@ export const useTruecaller = ({
   useEffect(() => {
     if (Platform.OS !== 'ios' || !iosAppKey || !iosAppLink) return;
 
-    //TODO Add failure event;
-
     const eventEmitter = new NativeEventEmitter(TruecallerIOS);
+
+    eventEmitter.addListener(
+      TRUECALLER_IOS_EVENTS.TRUECALLER_FAILURE,
+      ({ errorMessage: errorMessageIOS, errorCode: errorCodeIOS }) => {
+        setError(errorMessageIOS);
+        setErrorCode(errorCodeIOS);
+      }
+    );
 
     eventEmitter.addListener(
       TRUECALLER_IOS_EVENTS.TRUECALLER_SUCCESS,
