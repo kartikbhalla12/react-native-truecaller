@@ -1,6 +1,6 @@
 {
   "name": "@kartikbhalla/react-native-truecaller",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "react native sdk integration of truecaller for both android and ios",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
