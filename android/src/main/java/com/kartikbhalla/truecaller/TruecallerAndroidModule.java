@@ -167,42 +167,60 @@ public class TruecallerAndroidModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void initialize(String buttonColor, String buttonTextColor, String buttonText, String buttonShape, String footerButtonText, String consentTitleText) {
-    TcSdkOptions tcSdkOptions = new TcSdkOptions.Builder(reactContext, tcOAuthCallback)
-      .buttonColor(Color.parseColor(buttonColor))
-      .buttonTextColor(Color.parseColor(buttonTextColor))
-      .ctaText(getButtonText(buttonText))
-      .buttonShapeOptions(getButtonShape(buttonShape))
 
-      .footerType(getFooterButtonText(footerButtonText))
-      .consentHeadingOption(getConsentHeadingText(consentTitleText))
-      .build();
+    try {
+      TcSdkOptions tcSdkOptions = new TcSdkOptions.Builder(reactContext, tcOAuthCallback)
+        .buttonColor(Color.parseColor(buttonColor))
+        .buttonTextColor(Color.parseColor(buttonTextColor))
+        .ctaText(getButtonText(buttonText))
+        .buttonShapeOptions(getButtonShape(buttonShape))
 
-    TcSdk.init(tcSdkOptions);
+        .footerType(getFooterButtonText(footerButtonText))
+        .consentHeadingOption(getConsentHeadingText(consentTitleText))
+        .build();
+
+      TcSdk.init(tcSdkOptions);
+    } catch (Exception e) {
+      sendTruecallerFailureEvent(0, e.getMessage());
+    }
+
   }
 
   @ReactMethod
   public void invoke() {
-    SecureRandom random = new SecureRandom();
-    BigInteger stateRequestedBigInt = new BigInteger(130, random);
-    String stateRequested = stateRequestedBigInt.toString(32);
+    try {
+      SecureRandom random = new SecureRandom();
+      BigInteger stateRequestedBigInt = new BigInteger(130, random);
+      String stateRequested = stateRequestedBigInt.toString(32);
 
-    TcSdk.getInstance().setOAuthState(stateRequested);
-    TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone", "email"});
+      TcSdk.getInstance().setOAuthState(stateRequested);
+      TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone", "email"});
 
-    codeVerifier = CodeVerifierUtil.Companion.generateRandomCodeVerifier();
-    String codeChallenge = CodeVerifierUtil.Companion.getCodeChallenge(codeVerifier);
+      codeVerifier = CodeVerifierUtil.Companion.generateRandomCodeVerifier();
+      String codeChallenge = CodeVerifierUtil.Companion.getCodeChallenge(codeVerifier);
 
-    if (codeChallenge != null) {
-      TcSdk.getInstance().setCodeChallenge(codeChallenge);
+      if (codeChallenge != null) {
+        TcSdk.getInstance().setCodeChallenge(codeChallenge);
+      }
+
+      TcSdk.getInstance().getAuthorizationCode((FragmentActivity) getCurrentActivity());
+    } catch (Exception e) {
+      sendTruecallerFailureEvent(0, e.getMessage());
     }
 
-    TcSdk.getInstance().getAuthorizationCode((FragmentActivity) getCurrentActivity());
   }
 
 
   @ReactMethod
   public boolean isUsable() {
-    return TcSdk.getInstance().isOAuthFlowUsable();
+
+    try {
+      return TcSdk.getInstance().isOAuthFlowUsable();
+    } catch (Exception e) {
+      sendTruecallerFailureEvent(0, e.getMessage());
+
+      return false;
+    }
   }
 
   private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
@@ -219,5 +237,13 @@ public class TruecallerAndroidModule extends ReactContextBaseJavaModule {
 
   private void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+  }
+
+  private void sendTruecallerFailureEvent(int errorCode, String errorMessage) {
+    WritableMap params = Arguments.createMap();
+    params.putInt("errorCode", errorCode);
+    params.putString("errorMessage", errorMessage);
+
+    sendEvent(reactContext, "TruecallerAndroidFailure", params);
   }
 }

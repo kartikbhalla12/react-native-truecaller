@@ -67,8 +67,6 @@ const isTruecallerSupported = () => {
   return false;
 };
 
-//TODO add events interfaces
-
 export const useTruecaller = ({
   androidClientId,
   iosAppKey,
@@ -82,14 +80,11 @@ export const useTruecaller = ({
 }: IUseTruecaller) => {
   const [user, setUser] = useState<IUser | null>(null);
 
-  //TODO
-  // const [errorCode, setErrorCode] = useState(null);
-  // const [error, setError] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (Platform.OS !== 'android' || !androidClientId) return;
-
-    //TODO Add failure event;
 
     DeviceEventEmitter.addListener(
       TRUECALLER_ANDROID_EVENTS.TRUECALLER_SUCCESS,
@@ -127,8 +122,8 @@ export const useTruecaller = ({
                 setUser({
                   firstName: resp.data.given_name,
                   lastName: resp.data.family_name || null,
-                  mobileNumber: resp.data.phone_number,
-                  countryCode: `+${resp.data.phone_number_country_code}`,
+                  mobileNumber: `+${resp.data.phone_number}`,
+                  countryCode: resp.data.phone_number_country_code,
                   gender: resp.data.gender || null,
                   email: resp.data.email || null,
                 })
@@ -139,6 +134,14 @@ export const useTruecaller = ({
           .catch(() => {
             //TODO error handling
           });
+      }
+    );
+
+    DeviceEventEmitter.addListener(
+      TRUECALLER_ANDROID_EVENTS.TRUECALLER_FAILURE,
+      ({ error: errorMessageAndroid, errorCode: errorCodeAndroid }) => {
+        setError(errorMessageAndroid);
+        setErrorCode(errorCodeAndroid);
       }
     );
   }, [androidClientId]);
@@ -177,10 +180,10 @@ export const useTruecaller = ({
         androidFooterButtonText,
       }),
     openTruecallerModal,
-    user,
     isTruecallerSupported,
-    //TODO error,
-    //TODO errorCode,
+    error,
+    errorCode,
+    user,
   };
 };
 
