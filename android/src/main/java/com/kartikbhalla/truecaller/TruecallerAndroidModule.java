@@ -194,7 +194,7 @@ public class TruecallerAndroidModule extends ReactContextBaseJavaModule {
       String stateRequested = stateRequestedBigInt.toString(32);
 
       TcSdk.getInstance().setOAuthState(stateRequested);
-      TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone", "email"});
+      TcSdk.getInstance().setOAuthScopes(new String[]{"profile", "phone", "email", "profile"});
 
       codeVerifier = CodeVerifierUtil.Companion.generateRandomCodeVerifier();
       String codeChallenge = CodeVerifierUtil.Companion.getCodeChallenge(codeVerifier);

@@ -51,6 +51,7 @@ RCT_EXPORT_METHOD(requestProfile) {
         @"phoneNumber": profile.phoneNumber ?: [NSNull null],
         @"countryCode": profile.countryCode ?: [NSNull null],
         @"gender": (profile.gender == 0) ? [NSNull null] : @(profile.gender),
+        @"profileUrl": profile.url ?: [NSNull null]
     };
     
     [self sendEventWithName:@"TruecallerIOSSuccess" body:profileData];

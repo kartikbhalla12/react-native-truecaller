@@ -48,6 +48,7 @@ export interface IUser {
   countryCode: string;
   gender: IGender | null;
   mobileNumber: string;
+  profileUrl: string | null;
 }
 
 export interface IAndroidUserResponse {
@@ -57,6 +58,7 @@ export interface IAndroidUserResponse {
   phone_number_country_code: string;
   gender: IGender | null;
   email: string | null;
+  profile: string | null;
 }
 
 export interface IIOSGender {

@@ -126,6 +126,7 @@ export const useTruecaller = ({
                   countryCode: resp.data.phone_number_country_code,
                   gender: resp.data.gender || null,
                   email: resp.data.email || null,
+                  profileUrl: resp.data.profile || null,
                 })
               );
 
@@ -169,6 +170,7 @@ export const useTruecaller = ({
           countryCode: profile.countryCode,
           gender: IOSGender?.[profile.gender] || null,
           mobileNumber: profile.phoneNumber,
+          profileUrl: profile.profileUrl || null,
         })
     );
   }, [iosAppKey, iosAppLink]);
